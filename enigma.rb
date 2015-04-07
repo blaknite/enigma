@@ -70,6 +70,7 @@ module Enigma
       options = DEFAULTS.merge(options)
       options['ring_settings'] = options['ring_settings'].split(' ').map{ |rs| rs.to_i - 1 }
 
+      @key = options['key']
       @rotors = []
       options['rotor_order'].upcase.split(' ').each_with_index do |r, i|
         @rotors << Enigma::Rotor.new(AVAILABLE_ROTORS[r], options['ring_settings'][i])
@@ -103,6 +104,10 @@ module Enigma
 
     def set_rotor_stepping(key)
       key.chars.each_with_index{ |c, i| @rotors[i].stepping = ALPHABET.index(c) }
+    end
+
+    def reset_rotor_stepping
+      set_rotor_stepping(@key)
     end
 
     private
