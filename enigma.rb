@@ -15,20 +15,21 @@ module Enigma
   }
 
   class Rotor
-    attr_accessor :wires, :notch, :stepping
+    attr_accessor :wires, :notch, :stepping, :ring_setting
 
     def initialize(rotor_settings, ring_setting)
-      self.wires = rotor_settings[:wires].chars.each_with_index.map{ |w, i| rotor_settings[:wires][(i + ring_setting) % 26] }.join
+      self.wires = rotor_settings[:wires]
+      self.ring_setting = ring_setting
       self.notch = rotor_settings[:notch]
       self.stepping = 0
     end
 
     def forward(c, offset = 0)
-      self.wires[(ALPHABET.index(c) + self.stepping - offset) % 26]
+      self.wires[(ALPHABET.index(c) + self.stepping - self.ring_setting - offset) % 26]
     end
 
     def reverse(c, offset = 0)
-      ALPHABET[(@wires.index(c) - self.stepping + offset) % 26]
+      ALPHABET[(@wires.index(c) - self.stepping + self.ring_setting + offset) % 26]
     end
 
     def step
@@ -111,19 +112,19 @@ module Enigma
         return '' unless ALPHABET.include?(c)
 
         @rotors[0].step if @rotors[1].step_next_rotor?
-        @rotors[1].step if @rotors[2].step_next_rotor?
+        @rotors[1].step if @rotors[1].step_next_rotor? || @rotors[2].step_next_rotor?
         @rotors[2].step
 
         c = @plug_board.convert(c)
 
-        c = @rotors.reverse.each_with_index.inject(c) do |c, (r, i)|
-          r.forward(c, @rotors[(@rotors.length - 1 - i) + 1] ? rotors[(@rotors.length - 1 - i) + 1].stepping : 0)
+        c = @rotors.reverse.inject(c) do |c, r|
+          r.forward(c, @rotors[@rotors.index(r) + 1] ? rotors[@rotors.index(r) + 1].stepping - rotors[@rotors.index(r) + 1].ring_setting : 0)
         end
 
-        c = @reflector.reflect(c, @rotors[0].stepping)
+        c = @reflector.reflect(c, @rotors[0].stepping - @rotors[0].ring_setting)
 
         c = @rotors.each_with_index.inject(c) do |c, (r, i)|
-          r.reverse(c, @rotors[i + 1] ? rotors[i + 1].stepping : 0)
+          r.reverse(c, @rotors[i + 1] ? rotors[i + 1].stepping - rotors[i + 1].ring_setting : 0)
         end
 
         c = @plug_board.convert(c)
