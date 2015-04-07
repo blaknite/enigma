@@ -94,9 +94,14 @@ module Enigma
     def decode(string)
       message_key, message_content = split_key_and_message(string)
 
-      set_rotor_stepping(message_key.chars.map{ |c| encode_character(c) }.join[0..2])
+      decoded_message_key = message_key.chars.map{ |c| encode_character(c) }.join
+      set_rotor_stepping(decoded_message_key[0..2])
 
-      return message_content.chars.map{ |c| encode_character(c) }.join
+      return decoded_message_key + ' ' + message_content.chars.map{ |c| encode_character(c) }.join
+    end
+
+    def set_rotor_stepping(key)
+      key.chars.each_with_index{ |c, i| @rotors[i].stepping = ALPHABET.index(c) }
     end
 
     private
@@ -128,10 +133,6 @@ module Enigma
 
       def split_key_and_message(string)
         [string.slice(0..5).upcase, string.slice(6..-1).strip.upcase]
-      end
-
-      def set_rotor_stepping(key)
-        key.chars.each_with_index{ |c, i| @rotors[i].stepping = ALPHABET.index(c) }
       end
     end
 end

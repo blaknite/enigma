@@ -10,11 +10,9 @@ encode_decode = ARGV.shift
 message = ARGV.pop
 options = Hash[*ARGV.map{ |arg| arg.split('=') }.flatten]
 
-enigma = Enigma::Machine.new(options)
-
 case encode_decode
 when 'encode'
-  puts enigma.encode(message)
+  puts Enigma::Machine.new(options).encode(message)
 when 'decode'
-  puts enigma.decode(message)
+  puts Enigma::Machine.new(options).decode(message)
 end
