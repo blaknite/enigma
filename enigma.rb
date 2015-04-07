@@ -14,7 +14,6 @@ module Enigma
     'key'           => 'AAA',
   }
 
-
   class Rotor
     attr_accessor :wires, :notch, :stepping
 
