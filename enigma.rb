@@ -19,7 +19,7 @@ module Enigma
 
     def initialize(rotor_settings, ring_setting)
       # apply wire configuration and adjust for ring setting
-      self.wires = rotor_settings[:wires].chars.each_with_index.map{ |w, i| rotor_settings[:wires][(i - ring_setting) % 26] }.join
+      self.wires = rotor_settings[:wires].chars.each_with_index.map{ |w, i| rotor_settings[:wires][(i - ring_setting) % ALPHABET.length] }.join
       self.ring_setting = ring_setting
       self.notch = rotor_settings[:notch]
       self.stepping = 0
@@ -28,13 +28,13 @@ module Enigma
     # encode character from right to left of rotor
     # offset comes from parent rotor
     def forward(c, offset = 0)
-      self.wires[(ALPHABET.index(c) + self.stepping - offset) % 26]
+      self.wires[(ALPHABET.index(c) + self.stepping - offset) % ALPHABET.length]
     end
 
     # encode character from left to right of rotor
     # offset comes from parent rotor
     def reverse(c, offset = 0)
-      ALPHABET[(@wires.index(c) - self.stepping + offset) % 26]
+      ALPHABET[(@wires.index(c) - self.stepping + offset) % ALPHABET.length]
     end
 
     # rotate the rotor one step
@@ -44,7 +44,7 @@ module Enigma
 
     # check if this rotor's position is at its notch
     def step_next_rotor?
-      ALPHABET[self.stepping % 26] == self.notch
+      ALPHABET[self.stepping % ALPHABET.length] == self.notch
     end
 
     # the current offset from A
@@ -59,8 +59,8 @@ module Enigma
     end
 
     def reflect(c, offset = 0)
-      c = @wires[(ALPHABET.index(c) - offset) % 26]
-      c = ALPHABET[(ALPHABET.index(c) + offset) % 26]
+      c = @wires[(ALPHABET.index(c) - offset) % ALPHABET.length]
+      c = ALPHABET[(ALPHABET.index(c) + offset) % ALPHABET.length]
       return c
     end
   end
