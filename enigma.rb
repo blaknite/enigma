@@ -78,18 +78,18 @@ module Enigma
   class Machine
     def initialize(options = {})
       options = DEFAULTS.merge(options)
-      options['ring_settings'] = options['ring_settings'].split(' ').map{ |rs| rs.to_i - 1 }
 
-      @key = options['key']
       @rotors = []
-      options['rotor_order'].upcase.split(' ').each_with_index do |r, i|
-        @rotors << Enigma::Rotor.new(AVAILABLE_ROTORS[r], options['ring_settings'][i])
+      ring_settings = options['ring_settings'].split(' ').map{ |rs| rs.to_i - 1 }.reverse
+      options['rotor_order'].upcase.split(' ').reverse.each_with_index do |r, i|
+        @rotors << Enigma::Rotor.new(AVAILABLE_ROTORS[r], ring_settings[i])
       end
 
       @reflector = Enigma::Reflector.new
       @plug_board = Enigma::PlugBoard.new(options['plug_board'])
 
-      set_rotor_stepping(options['key'])
+      @key = options['key']
+      reset_rotor_stepping
     end
 
     # encode a message using the day key and its unique key
@@ -115,7 +115,7 @@ module Enigma
 
     # sets the rotor stepping to match a given key
     def set_rotor_stepping(key)
-      key.chars.each_with_index{ |c, i| @rotors[i].stepping = ALPHABET.index(c) }
+      key.chars.reverse.each_with_index{ |c, i| @rotors[i].stepping = ALPHABET.index(c) }
     end
 
     # resets the rotor stepping to the 'day key'
@@ -130,24 +130,24 @@ module Enigma
         return '' unless ALPHABET.include?(c) # only A-Z are valid characters in an encoded message
 
         # step the rotors before encoding each character
-        @rotors[0].step if @rotors[1].step_next_rotor?
-        @rotors[1].step if @rotors[1].step_next_rotor? || @rotors[2].step_next_rotor?
-        @rotors[2].step
+        @rotors[2].step if @rotors[1].step_next_rotor?
+        @rotors[1].step if @rotors[1].step_next_rotor? || @rotors[0].step_next_rotor?
+        @rotors[0].step
 
         # encode using plugboard
         c = @plug_board.convert(c)
 
         # encode forward through each rotor
-        c = @rotors.reverse.inject(c) do |c, r|
-          r.forward(c, @rotors[@rotors.index(r) + 1] ? @rotors[@rotors.index(r) + 1].offset : 0)
+        c = @rotors.inject(c) do |c, r|
+          r.forward(c, @rotors[@rotors.index(r) - 1] ? @rotors[@rotors.index(r) - 1].offset : 0)
         end
 
         # reflect the character back through the rotors
-        c = @reflector.reflect(c, @rotors[0].offset)
+        c = @reflector.reflect(c, @rotors[2].offset)
 
         # encode reverse through all the rotors
-        c = @rotors.inject(c) do |c, r|
-          r.reverse(c, @rotors[@rotors.index(r) + 1] ? @rotors[@rotors.index(r) + 1].offset : 0)
+        c = @rotors.reverse.inject(c) do |c, r|
+          r.reverse(c, @rotors[@rotors.index(r) - 1] ? @rotors[@rotors.index(r) - 1].offset : 0)
         end
 
         # encode again using plugboard
