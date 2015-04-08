@@ -76,8 +76,6 @@ module Enigma
   end
 
   class Machine
-    attr_accessor :rotors
-
     def initialize(options = {})
       options = DEFAULTS.merge(options)
       options['ring_settings'] = options['ring_settings'].split(' ').map{ |rs| rs.to_i - 1 }
@@ -141,7 +139,7 @@ module Enigma
 
         # encode forward through each rotor
         c = @rotors.reverse.inject(c) do |c, r|
-          r.forward(c, @rotors[@rotors.index(r) + 1] ? rotors[@rotors.index(r) + 1].offset : 0)
+          r.forward(c, @rotors[@rotors.index(r) + 1] ? @rotors[@rotors.index(r) + 1].offset : 0)
         end
 
         # reflect the character back through the rotors
@@ -149,7 +147,7 @@ module Enigma
 
         # encode reverse through all the rotors
         c = @rotors.inject(c) do |c, r|
-          r.reverse(c, @rotors[@rotors.index(r) + 1] ? rotors[@rotors.index(r) + 1].offset : 0)
+          r.reverse(c, @rotors[@rotors.index(r) + 1] ? @rotors[@rotors.index(r) + 1].offset : 0)
         end
 
         # encode again using plugboard
