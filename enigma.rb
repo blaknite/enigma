@@ -34,7 +34,7 @@ module Enigma
     # encode character from left to right of rotor
     # offset comes from parent rotor
     def reverse(c, offset = 0)
-      ALPHABET[(@wires.index(c) - self.stepping + offset) % ALPHABET.length]
+      ALPHABET[(self.wires.index(c) - self.stepping + offset) % ALPHABET.length]
     end
 
     # rotate the rotor one step
