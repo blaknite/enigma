@@ -19,7 +19,7 @@ module Enigma
 
     def initialize(rotor_settings, ring_setting)
       # apply wire configuration and adjust for ring setting
-      self.wires = rotor_settings[:wires].chars.each_with_index.map{ |w, i| rotor_settings[:wires][(i - ring_setting) % ALPHABET.length] }.join
+      self.wires = rotor_settings[:wires].chars.rotate(ring_setting).join
       self.ring_setting = ring_setting
       self.notch = rotor_settings[:notch]
       self.stepping = 0
