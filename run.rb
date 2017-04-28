@@ -8,7 +8,7 @@ require File.expand_path('../enigma', __FILE__)
 
 encode_decode = ARGV.shift
 message = ARGV.pop
-options = Hash[*ARGV.map{ |arg| arg.split('=') }.flatten]
+options = Hash[*ARGV.flat_map{ |arg| arg.split('=') }]
 
 case encode_decode
 when 'encode'
