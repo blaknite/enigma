@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # Usage: ./run.rb encode|decode [options] message
-# Options: rotor_order, ring_settings, plug_board, key.
+# Options: rotors, ring_positions, plug_pairs, day_key.
 # Defaults: 'I II III', '01 01 01', '', 'AAA'
 
 require File.expand_path('../enigma', __FILE__)
@@ -14,9 +14,11 @@ encode_decode = ARGV.shift
 message = ARGV.pop
 options = Hash[*ARGV.flat_map{ |arg| arg.split('=') }]
 
+machine = Enigma::Machine.new(options)
+
 case encode_decode
 when 'encode'
-  puts Enigma::Machine.new(options).encode(message)
+  puts machine.encode(message)
 when 'decode'
-  puts Enigma::Machine.new(options).decode(message)
+  puts machine.decode(message)
 end
