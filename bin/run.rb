@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#! /usr/bin/env ruby
 
 # Usage: ./run.rb [options] encode|decode message
 # Options: rotors, ring_positions, plug_pairs, day_key.
