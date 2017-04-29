@@ -18,6 +18,7 @@ module Enigma
 
       @reflector = Enigma::Reflector.new
       @plug_board = Enigma::PlugBoard.new(options['plug_board'])
+      @plug_board = Enigma::PlugBoard.new(options['plug_pairs'])
 
       @key = options['key']
       reset_rotor_stepping
