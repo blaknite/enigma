@@ -80,8 +80,8 @@ module Enigma
       return '' unless ALPHABET.include?(c) # only A-Z are valid characters in an encoded message
 
       # step the rotors before encoding each character
-      rotors[2].step if rotors[1].step_next_rotor?
-      rotors[1].step if rotors[1].step_next_rotor? || rotors[0].step_next_rotor?
+      rotors[1].step && rotors[2].step if rotors[1].step_next_rotor?
+      rotors[1].step if rotors[0].step_next_rotor?
       rotors[0].step
 
       # encode using plugboard
@@ -106,8 +106,16 @@ module Enigma
       string.chars.map.with_index{ |c, i| i % 5 == 0 ? ' ' + c : c }.join
     end
 
+    def previous_rotor(rotor)
+      rotors[rotors.index(rotor) - 1] if rotors.index(rotor) - 1 >= 0
+    end
+
+    def step_rotor?(rotor)
+      previous_rotor(rotor) ? previous_rotor(rotor).step_next_rotor? : true
+    end
+
     def offset_for(rotor)
-      rotors[rotors.index(rotor) - 1] ? rotors[rotors.index(rotor) - 1].offset : 0
+      previous_rotor(rotor) ? previous_rotor(rotor).offset : 0
     end
   end
 end
