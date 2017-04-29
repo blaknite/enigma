@@ -88,13 +88,13 @@ module Enigma
       c = plug_board.encode(c)
 
       # encode forward through each rotor
-      c = rotors.reduce(c) { |c, r| r.forward_encode(c, safe_rotor_offset(r)) }
+      c = rotors.reduce(c) { |c, r| r.forward_encode(c, offset_for(r)) }
 
       # reflect the character back through the rotors
       c = reflector.reflect(c, rotors.last.offset)
 
       # encode reverse through all the rotors
-      c = rotors.reverse.reduce(c) { |c, r| r.reverse_encode(c, safe_rotor_offset(r)) }
+      c = rotors.reverse.reduce(c) { |c, r| r.reverse_encode(c, offset_for(r)) }
 
       # encode again using plugboard
       c = plug_board.encode(c)
@@ -106,7 +106,7 @@ module Enigma
       string.chars.map.with_index{ |c, i| i % 5 == 0 ? ' ' + c : c }.join
     end
 
-    def safe_rotor_offset(rotor)
+    def offset_for(rotor)
       rotors[rotors.index(rotor) - 1] ? rotors[rotors.index(rotor) - 1].offset : 0
     end
   end
