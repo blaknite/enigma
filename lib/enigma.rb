@@ -1,3 +1,8 @@
+require 'enigma/machine'
+require 'enigma/plug_board'
+require 'enigma/reflector'
+require 'enigma/rotor'
+
 module Enigma
   ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   AVAILABLE_ROTORS = {
