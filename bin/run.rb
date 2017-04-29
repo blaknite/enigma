@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# Usage: ./run.rb encode|decode [options] message
+# Usage: ./run.rb [options] encode|decode message
 # Options: rotors, ring_positions, plug_pairs, day_key.
 # Defaults: 'I II III', '01 01 01', '', 'AAA'
 
@@ -8,8 +8,8 @@ $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'enigma'
 
-encode_decode = ARGV.shift
 message = ARGV.pop
+encode_decode = ARGV.pop
 options = Hash[*ARGV.flat_map{ |arg| arg.split('=') }]
 
 machine = Enigma::Machine.new(options)
