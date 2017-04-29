@@ -5,6 +5,10 @@
 # Defaults: 'I II III', '01 01 01', '', 'AAA'
 
 require File.expand_path('../enigma', __FILE__)
+require File.expand_path('../enigma/machine', __FILE__)
+require File.expand_path('../enigma/plug_board', __FILE__)
+require File.expand_path('../enigma/reflector', __FILE__)
+require File.expand_path('../enigma/rotor', __FILE__)
 
 encode_decode = ARGV.shift
 message = ARGV.pop
