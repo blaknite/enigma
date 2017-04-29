@@ -1,5 +1,12 @@
 module Enigma
   class Machine
+    DEFAULTS = {
+      'rotors'         => 'I II III',
+      'ring_positions' => '01 01 01',
+      'plug_pairs'     => '',
+      'day_key'        => 'AAA',
+    }
+
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
