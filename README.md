@@ -13,11 +13,12 @@ Rotors: `I II III`
 Ring positions: `13 04 21`  
 Plug pairs: `AH CP RB IP KX WO`  
 Day key: `LOL`  
-Message Key: `OMG`  
+Unique Key: `OMG`  
+Message Key: `WTF`  
 Message: `Jahwohl`  
 
-Encode: `bin/run.rb rotors="I II III" ring_positions="13 04 21" plug_pairs="AH CP RB IP KX WO" day_key="LOL" encode "OMG Jahwohl"`  
-Result: `LWV EQTDU SH`
+Encode: `bin/run.rb rotors="I II III" ring_positions="13 04 21" plug_pairs="AH CP RB IL KX WO" day_key="LOL" encode "OMG WTF Jahwohl"`  
+Result: `OMG VMY IJBIH PE`
 
-Decode: `bin/run.rb rotors="I II III" ring_positions="13 04 21" plug_pairs="AH CP RB IP KX WO" day_key="LOL" decode "LWV EQTDU SH"`  
-Result: `OMG JAHWO HL` or `OMG Jahwohl`
+Decode: `bin/run.rb rotors="I II III" ring_positions="13 04 21" plug_pairs="AH CP RB IL KX WO" day_key="LOL" decode "OMG VMY IJBIH PE"`  
+Result: `OMG WTF JAHWO TL` or `OMG Jahwohl`

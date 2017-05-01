@@ -28,34 +28,50 @@ module Enigma
     def encode(message)
       message = message.upcase
 
-      unique_key, content = split_key_and_content(message)
+      unique_key, message_key, content = split_keys_and_content(message)
 
-      apply_key(unique_key)
+      apply_key(message_key)
 
       content = group_characters(encode_string(content))
 
-      reset!
+      apply_key(unique_key)
 
-      encode_string(unique_key) + content
+      message_key = encode_string(message_key)
+
+      unique_key + ' ' + message_key + content
     end
 
     # decode a message using the day key and its unique key
     def decode(message)
       message = message.upcase
 
-      unique_key, content = split_key_and_content(message)
-
-      unique_key = encode_string(unique_key)
+      unique_key, message_key, content = split_keys_and_content(message)
 
       apply_key(unique_key)
 
+      message_key = encode_string(message_key)
+
+      apply_key(message_key)
+
       content = group_characters(encode_string(content))
 
-      unique_key + content
+      unique_key + ' ' + message_key + content
     end
 
     def reset!
       apply_key(day_key)
+    end
+
+    def left_rotor
+      rotors[2]
+    end
+
+    def middle_rotor
+      rotors[1]
+    end
+
+    def right_rotor
+      rotors[0]
     end
 
     private
@@ -67,9 +83,9 @@ module Enigma
     end
 
     # split the message and its unique key - the first word of the message is the key
-    def split_key_and_content(string)
+    def split_keys_and_content(string)
       string = string.split(' ')
-      [string[0], string[1..-1].join(' ')]
+      [string[0], string[1], string[2..-1].join(' ')]
     end
 
     def encode_string(string)
@@ -80,9 +96,7 @@ module Enigma
       return '' unless ALPHABET.include?(c) # only A-Z are valid characters in an encoded message
 
       # step the rotors before encoding each character
-      rotors[1].step && rotors[2].step if rotors[1].step_next_rotor?
-      rotors[1].step if rotors[0].step_next_rotor?
-      rotors[0].step
+      step_rotors!
 
       # encode using plugboard
       c = plug_board.encode(c)
@@ -100,6 +114,13 @@ module Enigma
       c = plug_board.encode(c)
 
       c
+    end
+
+    def step_rotors!
+      left_rotor.step!   if middle_rotor.step_next_rotor?
+      middle_rotor.step! if middle_rotor.step_next_rotor?
+      middle_rotor.step! if right_rotor.step_next_rotor?
+      right_rotor.step!
     end
 
     def group_characters(string)

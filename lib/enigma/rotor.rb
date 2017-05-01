@@ -23,7 +23,7 @@ module Enigma
     end
 
     # rotate the rotor one step
-    def step
+    def step!
       self.step_count += 1
     end
 
