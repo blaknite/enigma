@@ -4,8 +4,8 @@ module Enigma
       @plug_pairs = build_plug_pairs(plug_pairs)
     end
 
-    def encode(c)
-      @plug_pairs[c] ? @plug_pairs[c] : c
+    def encode(index)
+      @plug_pairs[ALPHABET[index]] ? ALPHABET.index(@plug_pairs[ALPHABET[index]]) : index
     end
 
     private
