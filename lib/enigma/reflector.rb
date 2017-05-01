@@ -2,14 +2,14 @@ module Enigma
   class Reflector
     DEFAULT_WIRES = 'YRUHQSLDPXNGOKMIEBFZCWVJAT'
 
+    attr_accessor :wires
+
     def initialize(type)
-      @wires = AVAILABLE_REFLECTORS[type]
+      self.wires = AVAILABLE_REFLECTORS[type]
     end
 
-    def reflect(c, offset = 0)
-      c = @wires[(ALPHABET.index(c) - offset) % ALPHABET.length]
-      c = ALPHABET[(ALPHABET.index(c) + offset) % ALPHABET.length]
-      c
+    def reflect(index)
+      ALPHABET.index(self.wires[index])
     end
   end
 end

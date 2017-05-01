@@ -95,13 +95,13 @@ module Enigma
       c = plug_board.encode(c)
 
       # encode forward through each rotor
-      c = rotors.reduce(c) { |c, r| r.forward_encode(c, offset_for(r)) }
+      i = rotors.reduce(ALPHABET.index(c)) { |i, r| r.forward_encode(i) }
 
       # reflect the character back through the rotors
-      c = reflector.reflect(c, rotors.last.offset)
+      i = reflector.reflect(i)
 
       # encode reverse through all the rotors
-      c = rotors.reverse.reduce(c) { |c, r| r.reverse_encode(c, offset_for(r)) }
+      c = ALPHABET[rotors.reverse.reduce(i) { |i, r| r.reverse_encode(i) }]
 
       # encode again using plugboard
       c = plug_board.encode(c)
@@ -128,8 +128,8 @@ module Enigma
       previous_rotor(rotor) ? previous_rotor(rotor).step_next_rotor? : true
     end
 
-    def offset_for(rotor)
-      previous_rotor(rotor) ? previous_rotor(rotor).offset : 0
+    def step_count_for(rotor)
+      previous_rotor(rotor) ? previous_rotor(rotor).step_count : 0
     end
   end
 end

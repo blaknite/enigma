@@ -4,22 +4,24 @@ module Enigma
 
     def initialize(type, ring_setting)
       # apply wire configuration and adjust for ring setting
-      self.wires = AVAILABLE_ROTORS[type][:wires].chars.rotate(ring_setting).join
+      self.wires = AVAILABLE_ROTORS[type][:wires]
       self.ring_setting = ring_setting
       self.notches = AVAILABLE_ROTORS[type][:notches]
       self.step_count = 0
     end
 
-    # encode character from right to left of rotor
-    # offset comes from parent rotor
-    def forward_encode(c, offset)
-      self.wires[(ALPHABET.index(c) + self.step_count - offset) % ALPHABET.length]
+    def forward_encode(index)
+      index = (index + self.step_count - self.ring_setting) % ALPHABET.length
+      index = ALPHABET.index(self.wires[index])
+      index = (index - self.step_count + self.ring_setting) % ALPHABET.length
+      index
     end
 
-    # encode character from left to right of rotor
-    # offset comes from parent rotor
-    def reverse_encode(c, offset)
-      ALPHABET[(self.wires.index(c) - self.step_count + offset) % ALPHABET.length]
+    def reverse_encode(index)
+      index = (index + self.step_count - self.ring_setting) % ALPHABET.length
+      index = self.wires.index(ALPHABET[index])
+      index = (index - self.step_count + self.ring_setting) % ALPHABET.length
+      index
     end
 
     # rotate the rotor one step
@@ -32,9 +34,10 @@ module Enigma
       self.notches.include?(ALPHABET[self.step_count % ALPHABET.length])
     end
 
-    # the current offset from A
-    def offset
-      self.step_count - self.ring_setting
+    private
+
+    def current_offset
+      self.ring_setting + self.step_count
     end
   end
 end
