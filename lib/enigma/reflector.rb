@@ -1,6 +1,11 @@
 module Enigma
   class Reflector
-    DEFAULT_WIRES = 'YRUHQSLDPXNGOKMIEBFZCWVJAT'
+    AVAILABLE_REFLECTORS = {
+      'B'      => 'YRUHQSLDPXNGOKMIEBFZCWVJAT',
+      'C'      => 'FVPJIAOYEDRZXWGCTKUQSBNMHL',
+      'B_THIN' => 'ENKQAUYWJICOPBLMDXZVFTHRGS',
+      'C_THIN' => 'RDOBJNTKVEHMLFCWZAXGYIPSUQ',
+    }
 
     attr_accessor :wires
 

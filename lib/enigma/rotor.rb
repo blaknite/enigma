@@ -1,5 +1,16 @@
 module Enigma
   class Rotor
+    AVAILABLE_ROTORS = {
+      'I'      => { wires: 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', notches: ['Q'] },
+      'II'     => { wires: 'AJDKSIRUXBLHWTMCQGZNPYFVOE', notches: ['E'] },
+      'III'    => { wires: 'BDFHJLCPRTXVZNYEIWGAKMUSQO', notches: ['V'] },
+      'IV'     => { wires: 'ESOVPZJAYQUIRHXLNFTGKDCMWB', notches: ['J'] },
+      'V'      => { wires: 'VZBRGITYUPSDNHLXAWMJQOFECK', notches: ['Z'] },
+      'VI'     => { wires: 'JPGVOUMFYQBENHZRDKASXLICTW', notches: ['Z', 'M'] },
+      'VII'    => { wires: 'NZJHGRCXMYSWBOUFAIVLPEKQDT', notches: ['Z', 'M'] },
+      'VIII'   => { wires: 'FKQHTLXOCBJSPDZRAMEWNIUYGV', notches: ['Z', 'M'] },
+    }
+
     attr_accessor :wires, :notches, :step_count, :ring_setting
 
     def initialize(type, ring_setting)
