@@ -119,7 +119,7 @@ module Enigma
 
     def step_rotors!
       left_rotor.step!   if middle_rotor.step_next_rotor?
-      middle_rotor.step! if middle_rotor.step_next_rotor?
+      middle_rotor.step! if middle_rotor.step_next_rotor? && !right_rotor.step_next_rotor?
       middle_rotor.step! if right_rotor.step_next_rotor?
       right_rotor.step!
     end

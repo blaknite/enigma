@@ -28,8 +28,8 @@ RSpec.describe Enigma::Machine do
       end
     end
 
-    context 'when the right rotor is at its notch' do
-      let(:right_start) { Enigma::ALPHABET.index(machine.right_rotor.notch) }
+    context 'when the right rotor is at its notches.first' do
+      let(:right_start) { Enigma::ALPHABET.index(machine.right_rotor.notches.first) }
 
       it 'should step the right and middle rotors' do
         expect(machine.right_rotor.step_count).to  eq right_start + 1
@@ -41,8 +41,8 @@ RSpec.describe Enigma::Machine do
       end
     end
 
-    context 'when the middle rotor is at its notch' do
-      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notch) }
+    context 'when the middle rotor is at its notches.first' do
+      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notches.first) }
 
       it 'should step all rotors' do
         expect(machine.right_rotor.step_count).to  eq right_start + 1
@@ -52,8 +52,8 @@ RSpec.describe Enigma::Machine do
     end
 
     context 'when the right and middle rotors are at their notches' do
-      let(:right_start)  { Enigma::ALPHABET.index(machine.right_rotor.notch) }
-      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notch) }
+      let(:right_start)  { Enigma::ALPHABET.index(machine.right_rotor.notches.first) }
+      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notches.first) }
 
       it 'should step all rotors' do
         expect(machine.right_rotor.step_count).to  eq right_start + 1
@@ -62,9 +62,9 @@ RSpec.describe Enigma::Machine do
       end
     end
 
-    context 'when the right rotor is at and the middle rotor is before its notch' do
-      let(:right_start)  { Enigma::ALPHABET.index(machine.right_rotor.notch) }
-      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notch) - 1 }
+    context 'when the right rotor is at and the middle rotor is before its notches.first' do
+      let(:right_start)  { Enigma::ALPHABET.index(machine.right_rotor.notches.first) }
+      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notches.first) - 1 }
 
       it 'should step the right and middle rotors' do
         expect(machine.right_rotor.step_count).to  eq right_start + 1

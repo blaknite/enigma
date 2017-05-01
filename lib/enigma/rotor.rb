@@ -1,12 +1,12 @@
 module Enigma
   class Rotor
-    attr_accessor :wires, :notch, :step_count, :ring_position
+    attr_accessor :wires, :notches, :step_count, :ring_position
 
     def initialize(type, ring_position)
       # apply wire configuration and adjust for ring setting
       self.wires = AVAILABLE_ROTORS[type][:wires].chars.rotate(ring_position).join
       self.ring_position = ring_position
-      self.notch = AVAILABLE_ROTORS[type][:notch]
+      self.notches = AVAILABLE_ROTORS[type][:notches]
       self.step_count = 0
     end
 
@@ -29,7 +29,7 @@ module Enigma
 
     # check if this rotor's position is at its notch
     def step_next_rotor?
-      ALPHABET[self.step_count % ALPHABET.length] == self.notch
+      self.notches.include?(ALPHABET[self.step_count % ALPHABET.length])
     end
 
     # the current offset from A
