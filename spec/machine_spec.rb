@@ -4,74 +4,74 @@ RSpec.describe Enigma::Machine do
   let(:machine) { Enigma::Machine.new }
 
   describe '#step_rotors' do
-    let(:right_start)  { 0 }
-    let(:middle_start) { 0 }
-    let(:left_start)   { 0 }
+    let(:first_start)  { 0 }
+    let(:second_start) { 0 }
+    let(:third_start)  { 0 }
 
     before do
-      machine.right_rotor.step_count  = right_start
-      machine.middle_rotor.step_count = middle_start
-      machine.left_rotor.step_count   = left_start
+      machine.first_rotor.step_count  = first_start
+      machine.second_rotor.step_count = second_start
+      machine.third_rotor.step_count  = third_start
 
       machine.send(:step_rotors!)
     end
 
     context 'at any time' do
-      it 'should step the right rotor' do
-        expect(machine.right_rotor.step_count).to eq right_start + 1
+      it 'should step the first rotor' do
+        expect(machine.first_rotor.step_count).to eq first_start + 1
       end
 
-      it 'should not step the middle or left rotor' do
-        expect(machine.middle_rotor.step_count).to eq middle_start
-        expect(machine.left_rotor.step_count).to   eq left_start
-      end
-    end
-
-    context 'when the right rotor is at its notches.first' do
-      let(:right_start) { Enigma::ALPHABET.index(machine.right_rotor.notches.first) }
-
-      it 'should step the right and middle rotors' do
-        expect(machine.right_rotor.step_count).to  eq right_start + 1
-        expect(machine.middle_rotor.step_count).to eq middle_start + 1
-      end
-
-      it 'should not step the left rotor' do
-        expect(machine.left_rotor.step_count).to eq left_start
+      it 'should not step the second or third rotor' do
+        expect(machine.second_rotor.step_count).to eq second_start
+        expect(machine.third_rotor.step_count).to  eq third_start
       end
     end
 
-    context 'when the middle rotor is at its notches.first' do
-      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notches.first) }
+    context 'when the first rotor is at its notches.first' do
+      let(:first_start) { Enigma::ALPHABET.index(machine.first_rotor.notches.first) }
+
+      it 'should step the first and second rotors' do
+        expect(machine.first_rotor.step_count).to  eq first_start + 1
+        expect(machine.second_rotor.step_count).to eq second_start + 1
+      end
+
+      it 'should not step the third rotor' do
+        expect(machine.third_rotor.step_count).to eq third_start
+      end
+    end
+
+    context 'when the second rotor is at its notches.first' do
+      let(:second_start) { Enigma::ALPHABET.index(machine.second_rotor.notches.first) }
 
       it 'should step all rotors' do
-        expect(machine.right_rotor.step_count).to  eq right_start + 1
-        expect(machine.middle_rotor.step_count).to eq middle_start + 1
-        expect(machine.left_rotor.step_count).to   eq left_start + 1
+        expect(machine.first_rotor.step_count).to  eq first_start + 1
+        expect(machine.second_rotor.step_count).to eq second_start + 1
+        expect(machine.third_rotor.step_count).to  eq third_start + 1
       end
     end
 
-    context 'when the right and middle rotors are at their notches' do
-      let(:right_start)  { Enigma::ALPHABET.index(machine.right_rotor.notches.first) }
-      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notches.first) }
+    context 'when the first and second rotors are at their notches' do
+      let(:first_start)  { Enigma::ALPHABET.index(machine.first_rotor.notches.first) }
+      let(:second_start) { Enigma::ALPHABET.index(machine.second_rotor.notches.first) }
 
       it 'should step all rotors' do
-        expect(machine.right_rotor.step_count).to  eq right_start + 1
-        expect(machine.middle_rotor.step_count).to eq middle_start + 1
-        expect(machine.left_rotor.step_count).to   eq left_start + 1
+        expect(machine.first_rotor.step_count).to  eq first_start + 1
+        expect(machine.second_rotor.step_count).to eq second_start + 1
+        expect(machine.third_rotor.step_count).to  eq third_start + 1
       end
     end
 
-    context 'when the right rotor is at and the middle rotor is before its notches.first' do
-      let(:right_start)  { Enigma::ALPHABET.index(machine.right_rotor.notches.first) }
-      let(:middle_start) { Enigma::ALPHABET.index(machine.middle_rotor.notches.first) - 1 }
+    context 'when the first rotor is at and the second rotor is before its notches.first' do
+      let(:first_start)  { Enigma::ALPHABET.index(machine.first_rotor.notches.first) }
+      let(:second_start) { Enigma::ALPHABET.index(machine.second_rotor.notches.first) - 1 }
 
-      it 'should step the right and middle rotors' do
-        expect(machine.right_rotor.step_count).to  eq right_start + 1
-        expect(machine.middle_rotor.step_count).to eq middle_start + 1
+      it 'should step the first and second rotors' do
+        expect(machine.first_rotor.step_count).to  eq first_start + 1
+        expect(machine.second_rotor.step_count).to eq second_start + 1
       end
 
-      it 'should not step the left rotor' do
-        expect(machine.left_rotor.step_count).to eq left_start
+      it 'should not step the third rotor' do
+        expect(machine.third_rotor.step_count).to eq third_start
       end
 
       context 'when stepped twice' do
@@ -79,13 +79,13 @@ RSpec.describe Enigma::Machine do
           machine.send(:step_rotors!)
         end
 
-        it 'should step the right and middle rotors twice' do
-          expect(machine.right_rotor.step_count).to  eq right_start + 2
-          expect(machine.middle_rotor.step_count).to eq middle_start + 2
+        it 'should step the first and second rotors twice' do
+          expect(machine.first_rotor.step_count).to  eq first_start + 2
+          expect(machine.second_rotor.step_count).to eq second_start + 2
         end
 
-        it 'should step the left rotor once' do
-          expect(machine.left_rotor.step_count).to eq left_start + 1
+        it 'should step the third rotor once' do
+          expect(machine.third_rotor.step_count).to eq third_start + 1
         end
       end
     end

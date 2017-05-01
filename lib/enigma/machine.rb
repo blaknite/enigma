@@ -55,15 +55,19 @@ module Enigma
       unique_key + ' ' + message_key + content
     end
 
-    def left_rotor
+    def fourth_rotor
+      rotors[3]
+    end
+
+    def third_rotor
       rotors[2]
     end
 
-    def middle_rotor
+    def second_rotor
       rotors[1]
     end
 
-    def right_rotor
+    def first_rotor
       rotors[0]
     end
 
@@ -112,10 +116,11 @@ module Enigma
     end
 
     def step_rotors!
-      left_rotor.step!   if middle_rotor.step_next_rotor?
-      middle_rotor.step! if middle_rotor.step_next_rotor? && !right_rotor.step_next_rotor?
-      middle_rotor.step! if right_rotor.step_next_rotor?
-      right_rotor.step!
+      fourth_rotor.step! if fourth_rotor && third_rotor.step_next_rotor?
+      third_rotor.step!  if second_rotor.step_next_rotor?
+      second_rotor.step! if second_rotor.step_next_rotor? && !first_rotor.step_next_rotor?
+      second_rotor.step! if first_rotor.step_next_rotor?
+      first_rotor.step!
     end
 
     def group_characters(string)
