@@ -18,7 +18,7 @@ Message Key: `WTF`
 Message: `Jahwohl`  
 
 Encode: `bin/run.rb rotors="I II III" reflector="B" ring_settings="13 04 21" plug_pairs="AH CP RB IL KX WO" encode "OMG WTF Jahwohl"`  
-Result: `OMG VMY IJBIH PE`
+Result: `OMG BKK PPSQA UE`
 
-Decode: `bin/run.rb rotors="I II III" reflector="B" ring_settings="13 04 21" plug_pairs="AH CP RB IL KX WO" decode "OMG VMY IJBIH PE"`  
+Decode: `bin/run.rb rotors="I II III" reflector="B" ring_settings="13 04 21" plug_pairs="AH CP RB IL KX WO" decode "OMG BKK PPSQA UE"`  
 Result: `OMG WTF JAHWO TL` or `OMG Jahwohl`
