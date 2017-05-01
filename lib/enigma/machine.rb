@@ -97,7 +97,7 @@ module Enigma
       i = plug_board.encode(i)
 
       # encode forward through each rotor
-      i = rotors.reduce(ALPHABET.index(c)) { |i, r| r.forward_encode(i) }
+      i = rotors.reduce(i) { |i, r| r.forward_encode(i) }
 
       # reflect the character back through the rotors
       i = reflector.reflect(i)
