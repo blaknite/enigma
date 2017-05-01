@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 # Usage: ./run.rb [options] encode|decode message
-# Options: rotors, reflector, ring_positions, plug_pairs, day_key.
+# Options: rotors, reflector, ring_settings, plug_pairs, day_key.
 # Defaults: 'I II III', 'B', '01 01 01', '', 'AAA'
 
 $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))

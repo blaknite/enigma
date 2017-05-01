@@ -3,7 +3,7 @@ module Enigma
     DEFAULTS = {
       'rotors'         => 'I II III',
       'reflector'      => 'B',
-      'ring_positions' => '01 01 01',
+      'ring_settings' => '01 01 01',
       'plug_pairs'     => '',
     }
 
@@ -12,10 +12,10 @@ module Enigma
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
-      ring_positions = options['ring_positions'].split(' ').map{ |rs| rs.to_i - 1 }
+      ring_settings = options['ring_settings'].split(' ').map{ |rs| rs.to_i - 1 }
       @rotors = options['rotors'].upcase.split(' ').map.with_index{ |type, i|
-        Enigma::Rotor.new(type, ring_positions[i])
-      }.reverse!
+        Enigma::Rotor.new(type, ring_settings[i])
+      }.reverse
 
       @reflector = Enigma::Reflector.new(options['reflector'])
       @plug_board = Enigma::PlugBoard.new(options['plug_pairs'])
