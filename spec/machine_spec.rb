@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'enigma'
 
 RSpec.describe Enigma::Machine do
   let(:machine) { Enigma::Machine.new }
