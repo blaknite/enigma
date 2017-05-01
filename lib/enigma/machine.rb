@@ -5,7 +5,6 @@ module Enigma
       'reflector'      => 'B',
       'ring_positions' => '01 01 01',
       'plug_pairs'     => '',
-      'day_key'        => 'AAA',
     }
 
     attr_reader :rotors, :reflector, :plug_board, :day_key
@@ -20,9 +19,6 @@ module Enigma
 
       @reflector = Enigma::Reflector.new(options['reflector'])
       @plug_board = Enigma::PlugBoard.new(options['plug_pairs'])
-      @day_key = options['day_key']
-
-      reset!
     end
 
     # encode a message using the day key and its unique key
@@ -57,10 +53,6 @@ module Enigma
       content = group_characters(encode_string(content))
 
       unique_key + ' ' + message_key + content
-    end
-
-    def reset!
-      apply_key(day_key)
     end
 
     def left_rotor
