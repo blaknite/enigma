@@ -2,6 +2,7 @@ module Enigma
   class Machine
     DEFAULTS = {
       'rotors'         => 'I II III',
+      'reflector'      => 'B',
       'ring_positions' => '01 01 01',
       'plug_pairs'     => '',
       'day_key'        => 'AAA',
@@ -17,7 +18,7 @@ module Enigma
         Enigma::Rotor.new(type, ring_positions[i])
       }.reverse!
 
-      @reflector = Enigma::Reflector.new
+      @reflector = Enigma::Reflector.new(options['reflector'])
       @plug_board = Enigma::PlugBoard.new(options['plug_pairs'])
       @day_key = options['day_key']
 

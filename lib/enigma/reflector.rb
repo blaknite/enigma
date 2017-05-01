@@ -2,8 +2,8 @@ module Enigma
   class Reflector
     DEFAULT_WIRES = 'YRUHQSLDPXNGOKMIEBFZCWVJAT'
 
-    def initialize(wires = nil)
-      @wires = wires || DEFAULT_WIRES
+    def initialize(type)
+      @wires = AVAILABLE_REFLECTORS[type]
     end
 
     def reflect(c, offset = 0)
