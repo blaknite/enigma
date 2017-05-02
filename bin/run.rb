@@ -20,7 +20,10 @@ options['plug_pairs'] = prompt('Provide the plug pairs', options['plug_pairs'])
 
 encode_decode = prompt('Encode or decode?', 'encode')
 
-message = prompt('Enter the message')
+message = [prompt('Enter the unique key')]
+message << prompt('Enter the message key')
+message << prompt('Enter the message')
+message = message.join(' ')
 
 machine = Enigma::Machine.new(options)
 
