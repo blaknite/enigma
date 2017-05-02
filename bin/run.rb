@@ -1,18 +1,30 @@
 #! /usr/bin/env ruby
 
-# Usage: ./run.rb [options] encode|decode message
-# Options: rotors, reflector, ring_settings, plug_pairs, day_key.
-# Defaults: 'I II III', 'B', '01 01 01', '', 'AAA'
-
 $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'enigma'
 
-message = ARGV.pop
-encode_decode = ARGV.pop
-options = Hash[*ARGV.flat_map{ |arg| arg.split('=') }]
+def prompt(question, default = nil)
+  print question
+  print " [#{default}]" unless default.nil? || default.empty?
+  print ': '
+  answer = $stdin.gets.chomp
+  answer.empty? ? default : answer
+end
+
+options = Enigma::Machine::DEFAULTS
+options['rotors'] = prompt('Select the rotors', options['rotors'])
+options['ring_settings'] = prompt('Provide the ring settings', options['ring_settings'])
+options['reflector'] = prompt('Select the reflector', options['reflector'])
+options['plug_pairs'] = prompt('Provide the plug pairs', options['plug_pairs'])
+
+encode_decode = prompt('Encode or decode?', 'encode')
+
+message = prompt('Enter the message')
 
 machine = Enigma::Machine.new(options)
+
+puts ''
 
 case encode_decode
 when 'encode'
