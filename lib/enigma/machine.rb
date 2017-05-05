@@ -71,20 +71,6 @@ module Enigma
       rotors[0]
     end
 
-    private
-
-    # applies the given key to the machine's rotors
-    def apply_key(key)
-      fail StandardError, 'key length and rotor count does not match' unless key.length == rotors.length
-      key.chars.reverse_each.with_index{ |c, i| rotors[i].step_count = ALPHABET.index(c) }
-    end
-
-    # split the message and its unique key - the first word of the message is the key
-    def split_keys_and_content(string)
-      string = string.split(' ')
-      [string[0], string[1], string[2..-1].join(' ')]
-    end
-
     def encode_string(string)
       string.chars.map{ |c| encode_character(c) }.join
     end
@@ -113,6 +99,20 @@ module Enigma
       i = plug_board.encode(i)
 
       ALPHABET[i]
+    end
+
+    private
+
+    # applies the given key to the machine's rotors
+    def apply_key(key)
+      fail StandardError, 'key length and rotor count does not match' unless key.length == rotors.length
+      key.chars.reverse_each.with_index{ |c, i| rotors[i].step_count = ALPHABET.index(c) }
+    end
+
+    # split the message and its unique key - the first word of the message is the key
+    def split_keys_and_content(string)
+      string = string.split(' ')
+      [string[0], string[1], string[2..-1].join(' ')]
     end
 
     def step_rotors!
