@@ -1,3 +1,6 @@
 steps:
   - name: ":rspec:"
-    command: "bundle install --path vendor && bundle exec rspec"
+    command: "rspec --color spec"
+    plugins:
+      docker-compose#v3.7.0:
+        run: test
