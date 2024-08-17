@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module Enigma
   class Rotor
     AVAILABLE_ROTORS = {
-      'I'      => { wires: 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', notches: ['Q'] },
-      'II'     => { wires: 'AJDKSIRUXBLHWTMCQGZNPYFVOE', notches: ['E'] },
-      'III'    => { wires: 'BDFHJLCPRTXVZNYEIWGAKMUSQO', notches: ['V'] },
-      'IV'     => { wires: 'ESOVPZJAYQUIRHXLNFTGKDCMWB', notches: ['J'] },
-      'V'      => { wires: 'VZBRGITYUPSDNHLXAWMJQOFECK', notches: ['Z'] },
-      'VI'     => { wires: 'JPGVOUMFYQBENHZRDKASXLICTW', notches: ['Z', 'M'] },
-      'VII'    => { wires: 'NZJHGRCXMYSWBOUFAIVLPEKQDT', notches: ['Z', 'M'] },
-      'VIII'   => { wires: 'FKQHTLXOCBJSPDZRAMEWNIUYGV', notches: ['Z', 'M'] },
-    }
+      "I" => { wires: "EKMFLGDQVZNTOWYHXUSPAIBRCJ", notches: %w[Q] },
+      "II" => { wires: "AJDKSIRUXBLHWTMCQGZNPYFVOE", notches: %w[E] },
+      "III" => { wires: "BDFHJLCPRTXVZNYEIWGAKMUSQO", notches: %w[V] },
+      "IV" => { wires: "ESOVPZJAYQUIRHXLNFTGKDCMWB", notches: %w[J] },
+      "V" => { wires: "VZBRGITYUPSDNHLXAWMJQOFECK", notches: %w[Z] },
+      "VI" => { wires: "JPGVOUMFYQBENHZRDKASXLICTW", notches: %w[Z M] },
+      "VII" => { wires: "NZJHGRCXMYSWBOUFAIVLPEKQDT", notches: %w[Z M] },
+      "VIII" => { wires: "FKQHTLXOCBJSPDZRAMEWNIUYGV", notches: %w[Z M] }
+    }.freeze
 
     attr_accessor :wires, :notches, :step_count, :ring_setting
 
@@ -22,17 +24,15 @@ module Enigma
     end
 
     def forward_encode(index)
-      index = (index + self.step_count - self.ring_setting) % ALPHABET.length
-      index = ALPHABET.index(self.wires[index])
-      index = (index - self.step_count + self.ring_setting) % ALPHABET.length
-      index
+      index = (index + step_count - ring_setting) % ALPHABET.length
+      index = ALPHABET.index(wires[index])
+      (index - step_count + ring_setting) % ALPHABET.length
     end
 
     def reverse_encode(index)
-      index = (index + self.step_count - self.ring_setting) % ALPHABET.length
-      index = self.wires.index(ALPHABET[index])
-      index = (index - self.step_count + self.ring_setting) % ALPHABET.length
-      index
+      index = (index + step_count - ring_setting) % ALPHABET.length
+      index = wires.index(ALPHABET[index])
+      (index - step_count + ring_setting) % ALPHABET.length
     end
 
     # rotate the rotor one step
@@ -42,13 +42,13 @@ module Enigma
 
     # check if this rotor's position is at its notch
     def step_next_rotor?
-      self.notches.include?(ALPHABET[self.step_count % ALPHABET.length])
+      notches.include?(ALPHABET[self.step_count % ALPHABET.length])
     end
 
     private
 
     def current_offset
-      self.ring_setting + self.step_count
+      ring_setting + self.step_count
     end
   end
 end

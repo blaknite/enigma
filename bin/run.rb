@@ -1,37 +1,38 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
-$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 
-require 'enigma'
+require "enigma"
 
 def prompt(question, default = nil)
   print question
   print " [#{default}]" unless default.nil? || default.empty?
-  print ': '
+  print ": "
   answer = $stdin.gets.chomp
   answer.empty? ? default : answer
 end
 
 options = Enigma::Machine::DEFAULTS
-options['rotors'] = prompt('Select the rotors', options['rotors'])
-options['ring_settings'] = prompt('Provide the ring settings', options['ring_settings'])
-options['reflector'] = prompt('Select the reflector', options['reflector'])
-options['plug_pairs'] = prompt('Provide the plug pairs', options['plug_pairs'])
+options["rotors"] = prompt("Select the rotors", options["rotors"])
+options["ring_settings"] = prompt("Provide the ring settings", options["ring_settings"])
+options["reflector"] = prompt("Select the reflector", options["reflector"])
+options["plug_pairs"] = prompt("Provide the plug pairs", options["plug_pairs"])
 
-encode_decode = prompt('Encode or decode?', 'encode')
+encode_decode = prompt("Encode or decode?", "encode")
 
-message = [prompt('Enter the unique key')]
-message << prompt('Enter the message key')
-message << prompt('Enter the message')
-message = message.join(' ')
+message = [prompt("Enter the unique key")]
+message << prompt("Enter the message key")
+message << prompt("Enter the message")
+message = message.join(" ")
 
 machine = Enigma::Machine.new(options)
 
-puts ''
+puts ""
 
 case encode_decode
-when 'encode'
+when "encode"
   puts machine.encode(message)
-when 'decode'
+when "decode"
   puts machine.decode(message)
 end

@@ -1,24 +1,26 @@
+# frozen_string_literal: true
+
 module Enigma
   class Machine
     DEFAULTS = {
-      'rotors'         => 'I II III',
-      'reflector'      => 'B',
-      'ring_settings' => '01 01 01',
-      'plug_pairs'     => '',
-    }
+      "rotors" => "I II III",
+      "reflector" => "B",
+      "ring_settings" => "01 01 01",
+      "plug_pairs" => ""
+    }.freeze
 
     attr_reader :rotors, :reflector, :plug_board, :day_key
 
     def initialize(options = {})
       options = DEFAULTS.merge(options)
 
-      ring_settings = options['ring_settings'].split(' ').map{ |rs| rs.to_i - 1 }
-      @rotors = options['rotors'].upcase.split(' ').map.with_index{ |type, i|
+      ring_settings = options["ring_settings"].split(" ").map { |rs| rs.to_i - 1 }
+      @rotors = options["rotors"].upcase.split(" ").map.with_index do |type, i|
         Enigma::Rotor.new(type, ring_settings[i])
-      }.reverse
+      end.reverse
 
-      @reflector = Enigma::Reflector.new(options['reflector'])
-      @plug_board = Enigma::PlugBoard.new(options['plug_pairs'])
+      @reflector = Enigma::Reflector.new(options["reflector"])
+      @plug_board = Enigma::PlugBoard.new(options["plug_pairs"])
     end
 
     # encode a message using the day key and its unique key
@@ -35,7 +37,7 @@ module Enigma
 
       message_key = encode_string(message_key)
 
-      unique_key + ' ' + message_key + content
+      "#{unique_key} #{message_key}#{content}"
     end
 
     # decode a message using the day key and its unique key
@@ -52,7 +54,7 @@ module Enigma
 
       content = group_characters(encode_string(content))
 
-      unique_key + ' ' + message_key + content
+      "#{unique_key} #{message_key}#{content}"
     end
 
     def fourth_rotor
@@ -72,11 +74,11 @@ module Enigma
     end
 
     def encode_string(string)
-      string.chars.map{ |c| encode_character(c) }.join
+      string.chars.map { |c| encode_character(c) }.join
     end
 
     def encode_character(c)
-      return '' unless ALPHABET.include?(c) # only A-Z are valid characters in an encoded message
+      return "" unless ALPHABET.include?(c) # only A-Z are valid characters in an encoded message
 
       # step the rotors before encoding each character
       step_rotors!
@@ -105,14 +107,15 @@ module Enigma
 
     # applies the given key to the machine's rotors
     def apply_key(key)
-      fail StandardError, 'key length and rotor count does not match' unless key.length == rotors.length
-      key.chars.reverse_each.with_index{ |c, i| rotors[i].step_count = ALPHABET.index(c) }
+      raise StandardError, "key length and rotor count does not match" unless key.length == rotors.length
+
+      key.chars.reverse_each.with_index { |c, i| rotors[i].step_count = ALPHABET.index(c) }
     end
 
     # split the message and its unique key - the first word of the message is the key
     def split_keys_and_content(string)
-      string = string.split(' ')
-      [string[0], string[1], string[2..-1].join(' ')]
+      string = string.split(" ")
+      [string[0], string[1], string[2..].join(" ")]
     end
 
     def step_rotors!
@@ -124,7 +127,7 @@ module Enigma
     end
 
     def group_characters(string)
-      string.chars.map.with_index{ |c, i| i % 5 == 0 ? ' ' + c : c }.join
+      string.chars.map.with_index { |c, i| (i % 5).zero? ? " #{c}" : c }.join
     end
 
     def previous_rotor(rotor)

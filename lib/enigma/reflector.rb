@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module Enigma
   class Reflector
     AVAILABLE_REFLECTORS = {
-      'B'      => 'YRUHQSLDPXNGOKMIEBFZCWVJAT',
-      'C'      => 'FVPJIAOYEDRZXWGCTKUQSBNMHL',
-      'B_THIN' => 'ENKQAUYWJICOPBLMDXZVFTHRGS',
-      'C_THIN' => 'RDOBJNTKVEHMLFCWZAXGYIPSUQ',
-    }
+      "B" => "YRUHQSLDPXNGOKMIEBFZCWVJAT",
+      "C" => "FVPJIAOYEDRZXWGCTKUQSBNMHL",
+      "B_THIN" => "ENKQAUYWJICOPBLMDXZVFTHRGS",
+      "C_THIN" => "RDOBJNTKVEHMLFCWZAXGYIPSUQ"
+    }.freeze
 
     attr_accessor :wires
 
@@ -14,7 +16,7 @@ module Enigma
     end
 
     def reflect(index)
-      ALPHABET.index(self.wires[index])
+      ALPHABET.index(wires[index])
     end
   end
 end
